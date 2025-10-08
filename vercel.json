@@ -1,10 +1,8 @@
-vercel.json
 {
   "version": 2,
-  "rootDirectory": "tts-reader-link",
   "functions": {
     "api/read.js": { "runtime": "nodejs18.x", "memory": 1024, "maxDuration": 60 },
-    "api/tts.js": { "runtime": "nodejs18.x", "memory": 1024, "maxDuration": 60 }
+    "api/tts.js":  { "runtime": "nodejs18.x", "memory": 1024, "maxDuration": 60 }
   },
   "rewrites": [
     { "source": "/read", "destination": "/api/read" }
