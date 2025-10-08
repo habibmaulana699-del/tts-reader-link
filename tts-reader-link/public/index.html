@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Buat Link TTS + QR</title>
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial; padding: 24px; max-width: 760px; margin: auto; background: #f8fafc; }
+    h1 { margin: 0 0 12px; }
+    .card { background: #fff; border: 1px solid #e5e7eb; border-radius: 16px; padding: 16px; box-shadow: 0 6px 24px rgba(0,0,0,0.06); }
+    label { display: block; margin-bottom: 6px; font-weight: 600; }
+    input, button { font-size: 16px; padding: 10px; }
+    input[type="url"] { width: 100%; border: 1px solid #cbd5e1; border-radius: 8px; }
+    .row { display: flex; gap: 12px; margin-top: 12px; flex-wrap: wrap; }
+    button { border: none; border-radius: 8px; background: #0f172a; color: #fff; cursor: pointer; }
+    button:disabled { opacity: 0.6; }
+    .qr { margin-top: 16px; display: flex; gap: 20px; align-items: center; flex-wrap: wrap; }
+    .link { word-break: break-all; }
+    .hint { color: #334155; font-size: 14px; margin-top: 8px; }
+  </style>
+</head>
+<body>
+  <h1>Link Pembaca + TTS &middot; QR Generator</h1>
+  <p>Tempel URL website yang ingin dibuat aksesibilitas TTS (contoh: halaman PPID).</p>
+
+  <div class="card">
+    <label for="url">URL halaman</label>
+    <input id="url" type="url" placeholder="https://ppid.kkp.go.id/upt/balai-kipm-tarakan/" value="https://ppid.kkp.go.id/upt/balai-kipm-tarakan/"/>
+    <div class="row">
+      <button id="gen">Buat Link</button>
+      <a id="open" href="#" target="_blank" rel="noopener"><button type="button">Buka</button></a>
+    </div>
+    <div class="hint">Link akan menampilkan halaman reader dengan toolbar TTS, cocok untuk QR Code.</div>
+    <div class="qr">
+      <div id="qrcode"></div>
+      <div class="link" id="link"></div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script>
+    const urlInput = document.getElementById('url');
+    const genBtn = document.getElementById('gen');
+    const openA = document.getElementById('open');
+    const linkDiv = document.getElementById('link');
+    const qrcodeDiv = document.getElementById('qrcode');
+    let qr;
+
+    function makeReadUrl(u) {
+      const base = '/read';
+      const p = new URLSearchParams({ url: u });
+      return base + '?' + p.toString();
+    }
+
+    genBtn.addEventListener('click', () => {
+      const u = urlInput.value.trim();
+      if (!u) return;
+      const readUrl = makeReadUrl(u);
+      const abs = new URL(readUrl, window.location.href).toString();
+      openA.href = abs;
+      linkDiv.textContent = abs;
+      qrcodeDiv.innerHTML = '';
+      qr = new QRCode(qrcodeDiv, { text: abs, width: 180, height: 180 });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "functions": {
+    "api/read.js": {
+      "runtime": "nodejs18.x",
+      "memory": 1024,
+      "maxDuration": 60
+    },
+    "api/tts.js": {
+      "runtime": "nodejs18.x",
+      "memory": 1024,
+      "maxDuration": 60
+    }
+  }
+}
